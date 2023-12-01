@@ -20,6 +20,8 @@ model = load_model_from_path(model_path)
 sim = MjSim(model)
 viewer = MjViewer(sim)
 
+ctrl = [ 0,0,0,0,0,0,0,0] 
 for i in range(15000):
     sim.step()
     viewer.render()
+    sim.data.ctrl[:] = ctrl

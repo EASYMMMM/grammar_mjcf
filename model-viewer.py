@@ -14,14 +14,13 @@ import sys
 
 from mujoco_py import MjSim, MjViewer, load_model_from_path
 
-model_path = sys.argv[1]
+model_path = 'mjcf_model/antrobot.xml'
 print(model_path)
 model = load_model_from_path(model_path)
 sim = MjSim(model)
 viewer = MjViewer(sim)
 
-ctrl = [ 0,0,0,0,0,0,0,0] 
 for i in range(15000):
     sim.step()
     viewer.render()
-    sim.data.ctrl[:] = ctrl
+    

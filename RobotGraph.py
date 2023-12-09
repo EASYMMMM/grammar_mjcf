@@ -6,6 +6,9 @@ from typing import Union
 class RobotLink():
     '''
     机器人的link
+    body_pos: body坐标系的位置
+    euler: body坐标系旋转的欧拉角
+    geom_pos: 几何体位置
     '''
     def __init__(self,
                  name,

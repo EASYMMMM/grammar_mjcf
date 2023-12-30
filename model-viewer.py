@@ -20,13 +20,13 @@ print(model_path)
 model = load_model_from_path(model_path)
 sim = MjSim(model)
 viewer = MjViewer(sim)
-ctrl = np.zeros(len(sim.data.ctrl[:]))
-ctrl[5] = -0.5
+#ctrl = np.zeros(len(sim.data.ctrl[:]))
+#ctrl[2] = -0.5
 #ctrl[7] = -0.5
 
 for i in range(15000):
 
-    sim.data.ctrl[:] = ctrl
+    #sim.data.ctrl[:] = ctrl
     sim.step()
     viewer.render()
     

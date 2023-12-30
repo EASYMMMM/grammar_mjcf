@@ -1,5 +1,8 @@
 from RobotGraph import RobotGraph,RobotJoint,RobotLink
 from mjcf import elements as e
+import networkx as nx
+import matplotlib.pyplot as plt
+import queue
 
 class ModelGenerator():
     '''
@@ -199,7 +202,66 @@ class ModelGenerator():
                     )
         return joint,actuator
 
+    def get_robot_dfs(self,):
+        robot_graph = self.robot
+        node_stack = queue.LifoQueue() # 储存图节点 栈
+        body_stack = queue.LifoQueue() # 储存xmlbody 栈
+        joint_list = []
+        node_list  = []
+        # 先创建root body
+        if 'root' not in robot_graph.nodes :
+            raise ValueError('The robot graph does not have root node.') 
+        rootbody, rootgeom = self.get_link(robot_graph.nodes['root']['info'])
+        rootbody.add_child(rootgeom)
+        for n in robot_graph.successors('root'):
+            if robot_graph.nodes[n]['type'] == 'link':
+                if n not in node_list:
+                    node_stack.put(n) # 压栈
+                    body_stack.put(rootbody) # 压栈   
+                    node_list.append(n)
+            if robot_graph.nodes[n]['type'] == 'joint':
+                for p in robot_graph.successors(n):
+                    if p not in node_list:
+                        node_stack.put(p) # 压栈
+                        body_stack.put(rootbody) # 压栈   
+                        node_list.append(p) 
 
+        while not node_stack.empty(): # 当栈不为空
+            current_node = node_stack.get() # 栈顶元素
+            current_father_body = body_stack.get() # 栈顶元素
+            if robot_graph.nodes[current_node]['type'] == 'link':
+                body,geom = self.get_link(robot_graph.nodes[current_node]['info'])
+                body.add_child(geom)    
+                # 添加该节点上方的joint节点
+                pres = list(robot_graph.predecessors(current_node))[0]
+                if robot_graph.nodes[pres]['type'] == 'joint':
+                    for p in robot_graph.predecessors(current_node):
+                        if p in joint_list: 
+                            continue
+                        joint,actuator = self.get_joint(robot_graph.nodes[p]['info'])
+                        body.add_child(joint)
+                        joint_list.append(p) # 将该关节结点记录，防止重复添加 
+                        self.actuator.add_child(actuator) # 添加驱动
+            current_father_body.add_child(body)
+            # 继续下一个节点
+            if len(list(robot_graph.successors(current_node))) == 0:
+                # 若无子节点，继续循环
+                continue
+            else:
+                for n in robot_graph.successors(current_node):
+                    if robot_graph.nodes[n]['type'] == 'link':
+                        if n not in node_list:
+                            node_stack.put(n) # 压栈
+                            body_stack.put(body) # 压栈   
+                            node_list.append(n)
+                    if robot_graph.nodes[n]['type'] == 'joint':
+                        for p in robot_graph.successors(n):
+                            if p not in node_list:
+                                node_stack.put(p) # 压栈
+                                body_stack.put(body) # 压栈   
+                                node_list.append(p) 
+        self.worldbody.add_child(rootbody)     
+        
     def get_robot(self,robot_graph:RobotGraph):
         '''
         从机器人图生成一个机器人
@@ -267,7 +329,7 @@ class ModelGenerator():
 
 if __name__ == '__main__':
 
-    R = RobotGraph(name='antrobot')
+    R = RobotGraph(name='antrobot_dfs')
 
     root = RobotLink('root',link_type = 'sphere',size=0.25,body_pos=[0,0,2],geom_pos=[0,0,0])
     R.add_node( node_type='link',node_info = root)
@@ -341,9 +403,26 @@ if __name__ == '__main__':
     M.set_option(gravity=0)
     M.set_default()
     M.set_ground()
-    M.get_robot(R)
+    #M.get_robot(R)
+    M.get_robot_dfs()
 
     M.generate()
     print(M.compiler.angle)
+
+    for layer, nodes in enumerate(nx.topological_generations(R)):
+    # `multipartite_layout` expects the layer as a node attribute, so add the
+    # numeric layer value as a node attribute
+        for node in nodes:
+            R.nodes[node]["layer"] = layer
+
+    # Compute the multipartite_layout using the "layer" node attribute
+    pos = nx.multipartite_layout(R, subset_key="layer")
+
+    fig, ax = plt.subplots()
+    nx.draw_networkx(R, ax=ax,pos=pos)
+    ax.set_title("DAG layout in topological order")
+    fig.tight_layout()
+    plt.show()
+
 
 

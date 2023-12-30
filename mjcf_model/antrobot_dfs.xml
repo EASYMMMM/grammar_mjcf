@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mujoco model="antrobot">
+<mujoco model="antrobot_dfs">
 	<compiler/>
 	<option gravity="0 0 0"/>
 	<size nconmax="500" njmax="1000"/>
@@ -20,20 +20,11 @@
 		<geom conaffinity="1" condim="3" material="MatPlane" name="floor" pos="0 0 0" rgba="0.8 0.9 0.8 1" size="40 40 40" type="plane"/>
 		<body name="root" pos="0 0 2" euler="0 0 0">
 			<geom name="geomroot" pos="0 0 0" size="0.25" type="sphere"/>
-			<body name="leg1" pos="0.25 0 0" euler="0 0 0">
-				<geom fromto="0 0 0 0.5 0 0" name="geomleg1" size="0.1" type="capsule"/>
-				<joint axis="0 0 1" name="joint_joint01" pos="0 0 0" range="-45 45" type="hinge"/>
-				<joint axis="0 1 0" name="joint_joint02" pos="0 0 0" range="-45 45" type="hinge"/>
-				<body name="shin1" pos="0.5 0 0" euler="0 90 0">
-					<geom fromto="0 0 0 0.4 0 0" name="geomshin1" size="0.1" type="capsule"/>
-					<joint axis="0 1 0" name="joint_joint1" pos="0 0 0" range="-45 45" type="hinge"/>
-				</body>
-			</body>
-			<body name="leg2" pos="0 0.25 0" euler="0 0 90">
-				<geom fromto="0 0 0 0.5 0 0" name="geomleg2" size="0.1" type="capsule"/>
-				<body name="shin2" pos="0.5 0 0" euler="0 90 0">
-					<geom fromto="0 0 0 0.4 0 0" name="geomshin2" size="0.1" type="capsule"/>
-					<joint axis="0 1 0" name="joint_joint2" pos="0 0 0" range="-45 45" type="hinge"/>
+			<body name="leg4" pos="0 -0.25 0" euler="0 0 270">
+				<geom fromto="0 0 0 0.5 0 0" name="geomleg4" size="0.1" type="capsule"/>
+				<body name="shin4" pos="0.5 0 0" euler="0 90 0">
+					<geom fromto="0 0 0 0.4 0 0" name="geomshin4" size="0.1" type="capsule"/>
+					<joint axis="0 1 0" name="joint_joint4" pos="0 0 0" range="-45 45" type="hinge"/>
 				</body>
 			</body>
 			<body name="leg3" pos="-0.25 0 0" euler="0 0 180">
@@ -43,21 +34,30 @@
 					<joint axis="0 1 0" name="joint_joint3" pos="0 0 0" range="-45 45" type="hinge"/>
 				</body>
 			</body>
-			<body name="leg4" pos="0 -0.25 0" euler="0 0 270">
-				<geom fromto="0 0 0 0.5 0 0" name="geomleg4" size="0.1" type="capsule"/>
-				<body name="shin4" pos="0.5 0 0" euler="0 90 0">
-					<geom fromto="0 0 0 0.4 0 0" name="geomshin4" size="0.1" type="capsule"/>
-					<joint axis="0 1 0" name="joint_joint4" pos="0 0 0" range="-45 45" type="hinge"/>
+			<body name="leg2" pos="0 0.25 0" euler="0 0 90">
+				<geom fromto="0 0 0 0.5 0 0" name="geomleg2" size="0.1" type="capsule"/>
+				<body name="shin2" pos="0.5 0 0" euler="0 90 0">
+					<geom fromto="0 0 0 0.4 0 0" name="geomshin2" size="0.1" type="capsule"/>
+					<joint axis="0 1 0" name="joint_joint2" pos="0 0 0" range="-45 45" type="hinge"/>
+				</body>
+			</body>
+			<body name="leg1" pos="0.25 0 0" euler="0 0 0">
+				<geom fromto="0 0 0 0.5 0 0" name="geomleg1" size="0.1" type="capsule"/>
+				<joint axis="0 0 1" name="joint_joint01" pos="0 0 0" range="-45 45" type="hinge"/>
+				<joint axis="0 1 0" name="joint_joint02" pos="0 0 0" range="-45 45" type="hinge"/>
+				<body name="shin1" pos="0.5 0 0" euler="0 90 0">
+					<geom fromto="0 0 0 0.4 0 0" name="geomshin1" size="0.1" type="capsule"/>
+					<joint axis="0 1 0" name="joint_joint1" pos="0 0 0" range="-45 45" type="hinge"/>
 				</body>
 			</body>
 		</body>
 	</worldbody>
 	<actuator>
+		<motor ctrllimited="true" ctrlrange="-1 1" joint="joint_joint4"/>
+		<motor ctrllimited="true" ctrlrange="-1 1" joint="joint_joint3"/>
+		<motor ctrllimited="true" ctrlrange="-1 1" joint="joint_joint2"/>
 		<motor ctrllimited="true" ctrlrange="-1 1" joint="joint_joint01"/>
 		<motor ctrllimited="true" ctrlrange="-1 1" joint="joint_joint02"/>
 		<motor ctrllimited="true" ctrlrange="-1 1" joint="joint_joint1"/>
-		<motor ctrllimited="true" ctrlrange="-1 1" joint="joint_joint2"/>
-		<motor ctrllimited="true" ctrlrange="-1 1" joint="joint_joint3"/>
-		<motor ctrllimited="true" ctrlrange="-1 1" joint="joint_joint4"/>
 	</actuator>
 </mujoco>

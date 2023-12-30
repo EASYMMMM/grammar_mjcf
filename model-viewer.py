@@ -15,18 +15,18 @@ import sys
 from mujoco_py import MjSim, MjViewer, load_model_from_path
 import numpy as np
 
-model_path = 'mjcf_model/antrobot.xml'
+model_path = 'mjcf_model/antrobot_dfs.xml'
 print(model_path)
 model = load_model_from_path(model_path)
 sim = MjSim(model)
 viewer = MjViewer(sim)
-#ctrl = np.zeros(len(sim.data.ctrl[:]))
-#ctrl[2] = -0.5
+ctrl = np.zeros(len(sim.data.ctrl[:]))
+ctrl[5] = -0.5
 #ctrl[7] = -0.5
 
 for i in range(15000):
 
-    #sim.data.ctrl[:] = ctrl
+    sim.data.ctrl[:] = ctrl
     sim.step()
     viewer.render()
     

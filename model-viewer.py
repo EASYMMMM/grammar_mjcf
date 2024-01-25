@@ -15,7 +15,7 @@ import sys
 from mujoco_py import MjSim, MjViewer, load_model_from_path
 import numpy as np
 
-model_path = 'mjcf_model/nv_humanoid_srl_test.xml'
+model_path = 'mjcf_model/nv_humanoid_srl_2.xml'
 #model_path = 'mjcf_model/srl_3.xml'
 #model_path = 'E:\\CASIA\\RE_SRL\\IsaacGymEnvs\\assets\\mjcf\\nv_humanoid_srl_test.xml'
 print(model_path)
@@ -23,12 +23,13 @@ model = load_model_from_path(model_path)
 sim = MjSim(model)
 viewer = MjViewer(sim)
 #ctrl = np.zeros(len(sim.data.ctrl[:]))
-#ctrl[2] = -0.5
+#print(len(ctrl))
+#ctrl[3] = -0.5
 #ctrl[7] = -0.5
 
 for i in range(15000):
 
     #sim.data.ctrl[:] = ctrl
-    sim.step()
+    #sim.step()
     viewer.render()
     

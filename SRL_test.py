@@ -9,16 +9,23 @@ import matplotlib.pyplot as plt
 import queue
 from RobotModelGen import ModelGenerator
 
-def SRL_1():
-    R = RobotGraph(name='srl_1')
+def SRL_1(  name='srl_1',
+            first_leg_lenth = 0.10,
+            first_leg_size = 0.03,
+            second_leg_lenth = 0.68,
+            second_leg_size = 0.03,
+            third_leg_lenth = 0.18,
+            third_leg_size = 0.03,
+          ):
+    R = RobotGraph(name=name)
     backpack_width = 0.19
     backpack_thick = 0.02
-    first_leg_lenth = 0.10
-    first_leg_size = 0.03
-    second_leg_lenth = 0.68
-    second_leg_size = 0.03
-    third_leg_lenth = 0.18
-    third_leg_size = 0.03
+    # first_leg_lenth = 0.10
+    # first_leg_size = 0.03
+    # second_leg_lenth = 0.68
+    # second_leg_size = 0.03
+    # third_leg_lenth = 0.18
+    # third_leg_size = 0.03
 
     root = RobotLink('root',link_type = 'box',material="SRL", size=[backpack_thick,backpack_width/2,backpack_width/2],body_pos=[0,0,2],geom_pos=[0,0,0],euler=[0,0,180])
     R.add_node( node_type='link',node_info = root)
@@ -41,7 +48,8 @@ def SRL_1():
     R.add_node( node_type='joint', node_info=joint1)
     R.add_edge(started_node='leg1',ended_node='joint1')
     # 添加小腿
-    shin1 = RobotLink('shin1',length=second_leg_lenth,material="SRL",size=second_leg_size,body_pos=[first_leg_lenth,0,0],euler=[0,90,0])    
+    shin1 = RobotLink('shin1',length=second_leg_lenth,material="SRL",size=second_leg_size,body_pos=[first_leg_lenth,0,0],euler=[0,60,0])    
+    #shin1 = RobotLink('shin1',length=second_leg_lenth,material="SRL",size=second_leg_size,body_pos=[first_leg_lenth,0,0],euler=[0,90,0])    
     R.add_node( node_type='link', node_info=shin1)
     R.add_edge(started_node='joint1',ended_node='shin1')
     # 添加joint2
@@ -71,7 +79,8 @@ def SRL_1():
     R.add_node( node_type='joint', node_info=joint13)
     R.add_edge(started_node='leg2',ended_node='joint13')
     # 添加小腿
-    shin11 = RobotLink('shin11',length=second_leg_lenth,material="SRL",size=second_leg_size,body_pos=[first_leg_lenth,0,0],euler=[0,90,0])    
+    shin11 = RobotLink('shin11',length=second_leg_lenth,material="SRL",size=second_leg_size,body_pos=[first_leg_lenth,0,0],euler=[0,60,0])    
+    # shin11 = RobotLink('shin11',length=second_leg_lenth,material="SRL",size=second_leg_size,body_pos=[first_leg_lenth,0,0],euler=[0,90,0])    
     R.add_node( node_type='link', node_info=shin11)
     R.add_edge(started_node='joint13',ended_node='shin11')
     # 添加joint2
@@ -102,22 +111,29 @@ def SRL_1():
     M.generate()
     print(M.compiler.angle)
 
-def SRL_2():
-    R = RobotGraph(name='srl_2')
+def SRL_2(  name='srl_2',
+            first_leg_lenth = 0.10,
+            first_leg_size = 0.03,
+            second_leg_lenth = 0.68,
+            second_leg_size = 0.03,
+            third_leg_lenth = 0.18,
+            third_leg_size = 0.03,
+          ):
+    R = RobotGraph(name=name)
     backpack_width = 0.19
     backpack_thick = 0.05
-    first_leg_lenth = 0.10
-    first_leg_size = 0.03
-    second_leg_lenth = 0.68
-    second_leg_size = 0.03
-    third_leg_lenth = 0.18
-    third_leg_size = 0.03
+    # first_leg_lenth = 0.10
+    # first_leg_size = 0.03
+    # second_leg_lenth = 0.68
+    # second_leg_size = 0.03
+    # third_leg_lenth = 0.18
+    # third_leg_size = 0.03
 
     root = RobotLink('root',link_type = 'box',material="SRL", size=[backpack_thick,backpack_width/2,backpack_width/2],body_pos=[0,0,2],geom_pos=[0,0,0],euler=[0,0,180])
     R.add_node( node_type='link',node_info = root)
 
     # 添加一条腿
-    # 添加joint01, 髋关节
+    # 添加joint01 02, 髋关节2个自由度
     joint01 = RobotJoint('joint01',axis=[0,0,1],)
     R.add_node( node_type='joint', node_info=joint01)
     R.add_edge(started_node='root',ended_node='joint01')
@@ -132,7 +148,7 @@ def SRL_2():
     # 添加joint1
     joint1 = RobotJoint('joint1',axis=[0,1,0],)
     R.add_node( node_type='joint', node_info=joint1)
-    R.add_edge(started_node='leg1',ended_node='joint1')
+    R.add_edge( started_node='leg1',ended_node='joint1')
     # 添加小腿
     shin1 = RobotLink('shin1',length=second_leg_lenth,material="SRL",size=second_leg_size,body_pos=[first_leg_lenth,0,0],euler=[0,90,0])    
     R.add_node( node_type='link', node_info=shin1)
@@ -291,7 +307,9 @@ def SRL_3():
 
 
 if __name__ == '__main__':
-    SRL_1()
+    # SRL_1()
+    SRL_1(name='srl_4',second_leg_lenth=0.80)
+    # SRL_2()
     SRL_2()
     SRL_3()
     

@@ -168,7 +168,7 @@ class ModelGenerator():
             if i > 3:
                 i=0
         body =  e.Body(
-                name=robot_part.name,
+                name="SRL_"+robot_part.name,
                 pos=robot_part.body_pos,
                 quat=quat
                 )
@@ -178,21 +178,21 @@ class ModelGenerator():
         if robot_part.link_type == 'capsule': # 如果是胶囊形状
             geom =  e.Geom(
                     fromto = start_point,
-                    name   = "geom"+robot_part.name,
+                    name   = "SRL_geom_"+robot_part.name,
                     size   = robot_part.size,
                     type   = robot_part.link_type
                         )
         if robot_part.link_type == 'sphere': # 如果是胶囊形状
             geom =  e.Geom(
                     pos = robot_part.geom_pos,
-                    name   = "geom"+robot_part.name,
+                    name   = "SRL_geom_"+robot_part.name,
                     size   = robot_part.size,
                     type   = robot_part.link_type
                         )
         if robot_part.link_type == 'box': # 如果是box形状
             geom =  e.Geom(
                     pos = robot_part.geom_pos,
-                    name   = "geom"+robot_part.name,
+                    name   = "SRL_geom_"+robot_part.name,
                     size   = robot_part.size,
                     type   = robot_part.link_type
                         )
@@ -207,7 +207,7 @@ class ModelGenerator():
         '''
         joint = e.Joint(
                         axis=robot_joint.axis,
-                        name="joint_"+robot_joint.name,
+                        name="SRL_joint_"+robot_joint.name,
                         pos=robot_joint.pos,
                         range=robot_joint.joint_range,
                         type=robot_joint.joint_type
@@ -220,7 +220,7 @@ class ModelGenerator():
         actuator  = e.Motor(
                         ctrllimited=robot_joint.ctrllimited,
                         ctrlrange= robot_joint.ctrlrange,
-                        joint="joint_"+robot_joint.name,
+                        joint="SRL_joint_"+robot_joint.name,
                         
                     )
         return joint,actuator

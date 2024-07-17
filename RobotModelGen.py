@@ -198,6 +198,8 @@ class ModelGenerator():
                         )
         if robot_part.material != None:   # 添加几何体材料
             geom.material = robot_part.material
+        if robot_part.density != None:
+            geom.density = robot_part.density
         return body,geom
         
     def get_joint(self, robot_joint: RobotJoint) :

@@ -23,11 +23,16 @@ class RobotLink():
                  density = None,
                 ):
         self.name = name
-        self.length = length
-        self.size = size
+        self.length = length 
         self.link_type = link_type
-        self.start_point = start_point
-        self.end_point = start_point + [self.length,0,0]
+        if self.link_type == 'capsule':
+            self.start_point = start_point
+            self.end_point = start_point + [self.length,0,0]
+            self.size = size
+        if self.link_type == 'sphere':
+            self.size = size
+        if self.link_type == 'box':
+            self.size = size
         self.body_pos = body_pos
         self.euler = euler
         self.geom_pos = geom_pos

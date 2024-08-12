@@ -172,10 +172,10 @@ class ModelGenerator():
                 pos=robot_part.body_pos,
                 quat=quat
                 )
-        start_point = list(robot_part.start_point)
-        end_point = [start_point[0]+robot_part.length, start_point[1]+0,start_point[2]+0]
-        start_point.extend(end_point)
         if robot_part.link_type == 'capsule': # 如果是胶囊形状
+            start_point = list(robot_part.start_point)
+            end_point = [start_point[0]+robot_part.length, start_point[1]+0,start_point[2]+0]
+            start_point.extend(end_point)
             geom =  e.Geom(
                     fromto = start_point,
                     name   = "SRL_geom_"+robot_part.name,
@@ -254,6 +254,7 @@ class ModelGenerator():
         while not node_stack.empty(): # 当栈不为空
             current_node = node_stack.get() # 栈顶元素
             current_father_body = body_stack.get() # 栈顶元素
+            print(robot_graph.nodes[current_node])
             if robot_graph.nodes[current_node]['type'] == 'link':
                 body,geom = self.get_link(robot_graph.nodes[current_node]['info'])
                 body.add_child(geom)    
